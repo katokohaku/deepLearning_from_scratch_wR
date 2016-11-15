@@ -1,4 +1,4 @@
-# ã‚¼ãƒ­ã‹ã‚‰ä½œã‚‹Deep Learingã‚’ãªã‚‹ã¹ãå…ƒã®æœ¬ã®ã‚³ãƒ¼ãƒ‰ã«æº–æ‹ ã—ã¤ã¤ã€Rå®Ÿè£…ã™ã‚‹
+# ƒ[ƒ‚©‚çì‚éDeep Learing‚ğ‚È‚é‚×‚­Œ³‚Ì–{‚ÌƒR[ƒh‚É€‹’‚µ‚Â‚ÂARÀ‘•‚·‚é
 # common functions & utilities
 require(data.table)
 require(tidyverse)
@@ -11,42 +11,43 @@ change_ont_hot_label <- function(v){
     one_hot[ idx ] <- 1
     one_hot %>% t %>% data.frame
   }
- colnames(m) <- paste0("V",0:9)
- return(m)
+  colnames(m) <- paste0("V",0:9)
+  return(m)
 }
 #change_ont_hot_label(0:9)
 
 
+
 load_mnist_CSV <- function(
-  save_file = "./dataset/mnist_train.csv", 
-  normalize = TRUE,     # ç”»åƒã®ãƒ”ã‚¯ã‚»ãƒ«å€¤ã‚’0.0~1.0ã«æ­£è¦åŒ–ã™ã‚‹
-  flatten   = TRUE,     # ç”»åƒã‚’ä¸€æ¬¡å…ƒé…åˆ—ã«å¹³ã«ã™ã‚‹ã‹ã©ã†ã‹
-  one_hot_label = FALSE,# ãƒ©ãƒ™ãƒ«ã¯one-hoté…åˆ—ã¨ã—ã¦è¿”ã™
-  n_train   = 55000     # æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã«ä½¿ç”¨ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º
-  )
+  save_file = "./dataset/mnist_train.csv",
+  normalize = TRUE,     # ‰æ‘œ‚ÌƒsƒNƒZƒ‹’l‚ğ0.0~1.0‚É³‹K‰»‚·‚é
+  flatten   = TRUE,     # ‰æ‘œ‚ğˆêŸŒ³”z—ñ‚É•½‚É‚·‚é‚©‚Ç‚¤‚©
+  one_hot_label = FALSE,# ƒ‰ƒxƒ‹‚Íone-hot”z—ñ‚Æ‚µ‚Ä•Ô‚·
+  n_train   = 55000     # ‹³tƒf[ƒ^‚Ég—p‚·‚éƒf[ƒ^ƒTƒCƒY
+)
 {
   stopifnot( file.exists(save_file))
-  
+
   mnist <- fread(save_file, data.table = FALSE)
   train <- mnist %>% slice(1:n_train)
   test  <- mnist %>% slice((1+n_train):n())
-  
+
   train_image <- train %>% select(-NCOL(mnist))
   train_label <- train %>% select( NCOL(mnist))
   test_image  <- test  %>% select(-NCOL(mnist))
   test_label  <- test  %>% select( NCOL(mnist))
-  
+
   if( normalize ){
     train_image %<>% divide_by(255)
     test_image  %<>% divide_by(255)
   }
 
-  
+
   if (one_hot_label){
     train_label %<>% change_ont_hot_label
     train_label %<>% change_ont_hot_label
-  }  
-  
+  }
+
   invisible(
     list(train_label = train_label,
          train_image = train_image,
@@ -56,5 +57,5 @@ load_mnist_CSV <- function(
   )
 }
 
-m <- load_mnist_CSV()
-str(m, max.level = 1)  
+# m <- load_mnist_CSV()
+# str(m, max.level = 1)  
