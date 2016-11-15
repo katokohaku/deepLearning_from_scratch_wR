@@ -14,7 +14,7 @@ change_ont_hot_label <- function(v){
  colnames(m) <- paste0("V",0:9)
  return(m)
 }
-change_ont_hot_label(0:9)
+#change_ont_hot_label(0:9)
 
 
 load_mnist_CSV <- function(
