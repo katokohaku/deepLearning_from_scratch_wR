@@ -34,9 +34,9 @@ pyExecp(code = read_file)
 
 # 失敗してしまうが、不勉強なので原因がよくわからない。
 write_JSON_file <- "
-with open(\"D:\\sample_weight.json\", \'w\') as f: json.dump(network, f, sort_keys=True, indent=4)
+with open(\"chap03/sample_weight.json\", \'w\') as f: json.dump(network, f, sort_keys=True, indent=4)
 "
-pyExecp(code = write_JSON_file)
+# pyExecp(code = write_JSON_file)
 
 # これも失敗：シリアライズされてるオブジェクトは変換できない？
 p<- pyGet("network")
@@ -56,9 +56,9 @@ network_weight <- list(
 str(network_weight)
 
 # うまく取得できたぽいのでJSON形式で保存する
-write(file = "network_weight.JSON", toJSON(network_weight, pretty = TRUE))
+write(file = "chap03/network_weight.JSON", toJSON(network_weight, pretty = TRUE))
 
-x <- fromJSON("./network_weight.JSON")
+x <- fromJSON("chap03/network_weight.JSON")
 all.equal(network_weight, x)  # 微妙に丸められている...？
 
 pyExit()
