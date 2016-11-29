@@ -80,7 +80,6 @@ init_network <- function(){
   
   return(network)
 }
-init_network()
 
 
 forward <- function(network, x){
@@ -106,5 +105,7 @@ forward <- function(network, x){
 network <- init_network()
 x <- c(1.0, 0.5)
 y <- forward(network, x)
+
+Y # 本での出力値とずいぶん違うので丸め誤差だけなのかどうか不明
 
 # END ---------------------------------------------------------------------

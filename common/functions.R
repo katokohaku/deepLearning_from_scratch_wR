@@ -29,14 +29,33 @@ relu <- function(x){
 
 
 
-# def relu(x):
-#   return np.maximum(0, x)
-# 
-# 
 # def relu_grad(x):
 #   grad = np.zeros(x)
 # grad[x>=0] = 1
 # return grad
+
+
+
+softmax <- function(x){
+  
+  
+}
+#   if x.ndim == 2:
+#   x = x.T
+# x = x - np.max(x, axis=0)
+# y = np.exp(x) / np.sum(np.exp(x), axis=0)
+# return y.T 
+# 
+# x = x - np.max(x) # オーバーフロー対策
+# return np.exp(x) / np.sum(np.exp(x))
+# 
+
+
+
+
+
+
+
 # 
 # 
 # def softmax(x):
