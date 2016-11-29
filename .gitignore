@@ -5,3 +5,5 @@
 *.csv
 *gz
 *png
+*.JSON
+network_weight.JSON
