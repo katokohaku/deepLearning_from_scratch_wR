@@ -5,16 +5,38 @@ rm(list=ls())
 # mnistデータの取得/解凍 ---------------------------------------------------------
 source("dataset/mnist.R")
 
-# get data
 mnist <- load_mnist_CSV()
 str(mnist, max.level = 1)
 
 # initialize network
-network_weight <- fromJSON("./network_weight.JSON")
+network_weight <- fromJSON("./chap03/network_weight.JSON")
 str(network_weight)
 
+source("common/functions.R")
 
-# def predict(network, x):
+predict <- function(network, x){
+  
+  W1 <- network[["W1"]]
+  b1 <- network[["b1"]]
+  W2 <- network[["W2"]]
+  b2 <- network[["b2"]]
+  W3 <- network[["W3"]]
+  b3 <- network[["b3"]]
+  
+  A1 <- X %*% W1 + b1
+  Z1 <- sigmoid(A1)
+  
+  A2 <- Z1 %*% W2 + b2
+  Z2 <- sigmoid(A2)
+  
+  A3 <- Z2 %*% W3 + b3
+  Y <- softmax(A3)
+  
+  return(Y)
+}
+init_network()
+
+# def predict():
 #   W1, W2, W3 = network['W1'], network['W2'], network['W3']
 # b1, b2, b3 = network['b1'], network['b2'], network['b3']
 # 
