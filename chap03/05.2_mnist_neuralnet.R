@@ -1,5 +1,5 @@
 # ゼロから作るDeep Learingをなるべく元の本のコードに準拠しつつ、R実装する
-# 3.6.2. (p75-)　手書き数字認識::ニューラルネットの推論処理
+# 3.6.3. (p78-)　手書き数字認識::バッチ処理
 rm(list=ls())
 source("common/functions.R")
 
@@ -15,6 +15,7 @@ network_weight <- jsonlite::fromJSON("./chap03/network_weight.JSON")
 str(network_weight)
 
 predict <- function(network, x){
+  
   W1 <- network[["W1"]]
   b1 <- network[["b1"]]
   W2 <- network[["W2"]]
@@ -22,7 +23,7 @@ predict <- function(network, x){
   W3 <- network[["W3"]]
   b3 <- network[["b3"]]
   
-  A1 <- unlist(x) %*% W1 + b1
+  A1 <- as.matrix(x) %*% W1 + b1
   Z1 <- sigmoid(A1)
   
   A2 <- Z1 %*% W2 + b2
@@ -30,7 +31,7 @@ predict <- function(network, x){
   
   A3 <- Z2 %*% W3 + b3
   Y <- softmax(A3)
-  
+  #str(Y)
   return(Y)
 }
 
@@ -39,20 +40,34 @@ true_labels <- mnist$test_label %>% unlist %>% as.integer
 labels <- 0:9
 X <- mnist$test_image
 
-accuracy <- NULL
-for(i in 1:NROW(X)){
+start.time <- Sys.time()
+accuracy <- foreach(i = 1:NROW(X), .combine = rbind) %do% {
   y <- predict(network = network_weight, X[i, ])
   p <- which.max(y)
-  df <- data.frame(predict=labels[p], label=true_labels[i])
-  accuracy <- rbind(accuracy, df)
+  
+  data.frame(predict=labels[p], label=true_labels[i])
 }
 accuracy %>% str
 accuracy_cnt <- accuracy %$% sum(predict == label)
 
 print(accuracy_cnt / NROW(accuracy))
+Sys.time()-start.time
 
 
+# 3.6.3. (p78-)　手書き数字認識::バッチ処理
+BY=1000
+seqs <- seq(1,NROW(X),BY)
+start.time <- Sys.time()
+accuracy <- foreach(i = 1:(NROW(X)/BY), .combine = rbind) %do% {
+  ran <- seqs[i]:(i*BY)
+  y <- predict(network = network_weight, X[ran, ])
+  data.frame(predict=apply(y,1,which.max)-1, label=true_labels[ran])
+}
+accuracy %>% str
+accuracy_cnt <- accuracy %$% sum(predict == label)
 
+print(accuracy_cnt / NROW(accuracy))
+Sys.time()-start.time
 
 # END ------------------------------------------------------------------------
 
