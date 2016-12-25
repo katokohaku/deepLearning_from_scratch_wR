@@ -27,29 +27,18 @@ relu <- function(x){
 # relu <- Vectorize( function(x){ max(0, x) })
 
 
-
-
 # def relu_grad(x):
 #   grad = np.zeros(x)
 # grad[x>=0] = 1
 # return grad
 
 
-
 softmax <- function(x){
+  exp_x <- exp(x - max(x))
+  y <- exp_x / sum(exp_x)
   
-  
+  return( y )
 }
-#   if x.ndim == 2:
-#   x = x.T
-# x = x - np.max(x, axis=0)
-# y = np.exp(x) / np.sum(np.exp(x), axis=0)
-# return y.T 
-# 
-# x = x - np.max(x) # オーバーフロー対策
-# return np.exp(x) / np.sum(np.exp(x))
-# 
-
 
 
 
